@@ -27,7 +27,7 @@ trait HasSlug
 
         while ($model->newModelQuery()->where('slug', $slug)->exists()) {
             $count++;
-            $slug = $baseSlug . '-' . $count;
+            $slug = $baseSlug.'-'.$count;
         }
 
         return $slug;

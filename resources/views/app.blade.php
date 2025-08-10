@@ -13,6 +13,19 @@
             @vite(['resources/css/app.css', 'resources/sass/main.sass', 'resources/js/app.js'])
         @endif
     </head>
-    <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
+    <body class="antialiased">
+        <main class="md:min-h-screen md:flex md:items-center md:justify-center py-16 lg:py-20">
+            <div class="container">
+                @auth
+                    <form action="{{ route('logOut') }}" method="post" class="w-12">
+                        @csrf
+                        @method('DELETE')
+
+                        <x-form.primary-button>Выйти</x-form.primary-button>
+                    </form>
+                @endauth
+                {{ dump(auth()->user()) }}
+            </div>
+        </main>
     </body>
 </html>
