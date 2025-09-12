@@ -3,13 +3,19 @@
 namespace App\Providers;
 
 use Carbon\CarbonInterval;
+use Faker\Factory;
+use Faker\Generator;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Foundation\Http\Kernel;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Symfony\Component\HttpFoundation\Response;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,7 +24,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(Generator::class, function ($app) {
+            $faker = Factory::create();
+            $faker->addProvider(new FakerImageProvider($faker));
+
+            return $faker;
+        });
     }
 
     /**
@@ -26,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->configureReteLimiting();
         Model::shouldBeStrict(! app()->isProduction());
 
         if (app()->isProduction()) {
@@ -49,5 +61,16 @@ class AppServiceProvider extends ServiceProvider
                 }
             );
         }
+    }
+
+    protected function configureReteLimiting(): void
+    {
+        RateLimiter::for('global', function (Request $request) {
+            return Limit::perMinute(100)
+                ->by($request->user()?->id ?: $request->ip())
+                ->response(function (Request $request, array $headers) {
+                    return response('Take it easy', Response::HTTP_TOO_MANY_REQUESTS, $headers);
+                });
+        });
     }
 }

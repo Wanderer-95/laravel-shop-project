@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasSlug;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -18,7 +19,16 @@ class Product extends Model
         'brand_id',
         'thumbnail',
         'price',
+        'on_home_page',
+        'sorting',
     ];
+
+    public function scopeHomePage(Builder $query)
+    {
+        $query->where('on_home_page', true)
+            ->orderBy('sorting')
+            ->limit(6);
+    }
 
     protected static function boot()
     {

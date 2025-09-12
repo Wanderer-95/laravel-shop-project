@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <x-form.auth-forms title="Восстановление пароля" action="{{ route('password.update') }}" method="POST">
+    <x-form.auth-forms title="Восстановление пароля" action="{{ route('password-reset.handle') }}" method="POST">
         <input type="hidden" name="token" value="{{ $token }}">
 
         <x-form.text-input type="email" placeholder="E-mail" value="{{ request('email') }}" name="email" required is-error="{{ $errors->has('email') }}"/>

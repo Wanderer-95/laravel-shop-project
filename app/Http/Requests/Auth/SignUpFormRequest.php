@@ -5,7 +5,6 @@ namespace App\Http\Requests\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
-use Tests\RequestFactories\SignUpFormRequestFactory;
 
 class SignUpFormRequest extends FormRequest
 {
