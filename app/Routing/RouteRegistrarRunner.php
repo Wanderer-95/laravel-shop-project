@@ -3,7 +3,6 @@
 namespace App\Routing;
 
 use App\Contracts\RouteRegistrarContract;
-use Domain\Auth\Routing\AuthRegistrar;
 use Illuminate\Contracts\Routing\Registrar;
 use RuntimeException;
 

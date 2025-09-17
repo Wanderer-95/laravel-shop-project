@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Brand;
-use App\Models\Category;
-use App\Models\Product;
+use Database\Factories\BrandFactory;
+use Database\Factories\CategoryFactory;
+use Database\Factories\ProductFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -15,9 +15,9 @@ class HomeControllerTest extends TestCase
     public function test_home_page_displays_correct_data(): void
     {
         // Arrange: создаём по 3 записи каждой сущности для главной страницы
-        $brands = Brand::factory()->count(3)->create(['on_home_page' => true]);
-        $categories = Category::factory()->count(3)->create(['on_home_page' => true]);
-        $products = Product::factory()->count(3)->create(['on_home_page' => true]);
+        $brands = BrandFactory::new()->count(3)->create(['on_home_page' => true]);
+        $categories = CategoryFactory::new()->count(3)->create(['on_home_page' => true]);
+        $products = ProductFactory::new()->count(3)->create(['on_home_page' => true]);
 
         // Act: отправляем GET-запрос на главную страницу
         $response = $this->get(route('home')); // Убедись, что маршрут назван `home`

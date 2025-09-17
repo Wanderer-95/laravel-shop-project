@@ -2,16 +2,21 @@
 
 namespace App\Models;
 
-use App\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Support\Casts\PriceCast;
+use Support\Traits\HasSlug;
 
 class Product extends Model
 {
     use HasFactory;
     use HasSlug;
+
+    protected $casts = [
+        'price' => PriceCast::class
+    ];
 
     protected $fillable = [
         'slug',

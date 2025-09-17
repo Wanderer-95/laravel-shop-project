@@ -17,7 +17,7 @@ class TelegramBotServiceTest extends TestCase
 
     private int $chatId = 123456;
 
-    public function it_returns_true_when_message_sent_successfully()
+    public function test_returns_true_when_message_sent_successfully()
     {
         Http::fake([
             "https://api.telegram.org/bot{$this->token}/sendMessage" => Http::response([
@@ -37,7 +37,7 @@ class TelegramBotServiceTest extends TestCase
         });
     }
 
-    public function it_returns_false_if_api_returns_error()
+    public function test_returns_false_if_api_returns_error()
     {
         Http::fake([
             "https://api.telegram.org/bot{$this->token}/sendMessage" => Http::response([
@@ -51,7 +51,7 @@ class TelegramBotServiceTest extends TestCase
         $this->assertFalse($result);
     }
 
-    public function it_returns_false_and_reports_exception_on_failure()
+    public function test_returns_false_and_reports_exception_on_failure()
     {
         Http::fake([
             "https://api.telegram.org/bot{$this->token}/sendMessage" => Http::response(null, 500),
