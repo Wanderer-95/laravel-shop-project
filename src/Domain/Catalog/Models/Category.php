@@ -5,8 +5,6 @@ namespace Domain\Catalog\Models;
 use App\Models\Product;
 use Domain\Catalog\Collections\CategoryCollection;
 use Domain\Catalog\QueryBuilders\CategoryQueryBuilder;
-use Illuminate\Database\Eloquent\Attributes\Scope;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -27,6 +25,11 @@ class Category extends Model
         'sorting',
     ];
 
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'category_product', 'category_id', 'product_id');
+    }
+
     protected static function boot()
     {
         parent::boot();
@@ -44,10 +47,5 @@ class Category extends Model
     public function newEloquentBuilder($query): CategoryQueryBuilder
     {
         return new CategoryQueryBuilder($query);
-    }
-
-    public function products(): BelongsToMany
-    {
-        return $this->belongsToMany(Product::class, 'category_product', 'category_id', 'product_id');
     }
 }

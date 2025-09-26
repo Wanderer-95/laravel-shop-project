@@ -11,6 +11,7 @@ class RouteRegistrarRunner
     protected array $registrars = [
         AppRegistrar::class,
         AuthRegistrar::class,
+        CatalogRegistrar::class,
     ];
 
     public function __invoke(Registrar $router): void
