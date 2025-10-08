@@ -50,14 +50,16 @@
                             <div class="flex items-center gap-3">
                                 <input
                                     type="number"
+                                    name="filters[price][from]"
                                     class="w-full h-12 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs shadow-transparent outline-0 transition"
-                                    value="9800"
+                                    value="{{ request('filters.price.from', 0) }}"
                                     placeholder="От">
                                 <span class="text-body text-sm font-medium">–</span>
                                 <input
                                     type="number"
+                                    name="filters[price][to]"
                                     class="w-full h-12 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs shadow-transparent outline-0 transition"
-                                    value="142800"
+                                    value="{{ request('filters.price.to', 100000) }}"
                                     placeholder="До">
                             </div>
                         </div>
@@ -66,7 +68,13 @@
                             <h5 class="mb-4 text-sm 2xl:text-md font-bold">Бренд</h5>
                             @foreach($brands as $brand)
                                 <div class="form-checkbox">
-                                    <input type="checkbox" id="filters-brands-{{ $brand->id }}">
+                                    <input
+                                        name="filters[brands][{{ $brand->id }}]"
+                                        value="{{ $brand->id }}"
+                                        @checked(request('filters.brands.'.$brand->id))
+                                        type="checkbox"
+                                        id="filters-brands-{{ $brand->id }}"
+                                    >
                                     <label for="filters-brands-{{ $brand->id }}" class="form-checkbox-label">{{ $brand->title }}</label>
                                 </div>
                             @endforeach
@@ -102,14 +110,17 @@
                                 Найдено: {{ $products->total() }} товаров
                             </div>
                         </div>
-                        <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+                        <div x-data="{}" class="flex flex-col sm:flex-row sm:items-center gap-3">
                             <span class="text-body text-xxs sm:text-xs">Сортировать по</span>
-                            <form action="{{ route('catalog', $category) }}">
-                                <select class="form-select w-full h-12 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xxs sm:text-xs shadow-transparent outline-0 transition">
+                            <form x-ref="sortForm" action="{{ route('catalog', $category) }}">
+                                <select
+                                    name="sort"
+                                    x-on:change="$refs.sortForm.submit()"
+                                    class="form-select w-full h-12 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xxs sm:text-xs shadow-transparent outline-0 transition">
                                     <option value="" class="text-dark">по умолчанию</option>
-                                    <option value="" class="text-dark">от дешевых к дорогим</option>
-                                    <option value="" class="text-dark">от дорогих к дешевым</option>
-                                    <option value="" class="text-dark">наименованию</option>
+                                    <option @selected(request('sort') === 'price') value="price" class="text-dark">от дешевых к дорогим</option>
+                                    <option @selected(request('sort') === '-price') value="-price" class="text-dark">от дорогих к дешевым</option>
+                                    <option @selected(request('sort') === 'title') value="title" class="text-dark">наименованию</option>
                                 </select>
                             </form>
                         </div>
