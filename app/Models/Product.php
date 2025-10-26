@@ -18,7 +18,6 @@ class Product extends Model
 {
     use HasFactory;
     use HasSlug;
-    use Searchable;
 
     protected $casts = [
         'price' => PriceCast::class
@@ -32,15 +31,8 @@ class Product extends Model
         'price',
         'on_home_page',
         'sorting',
+        'text',
     ];
-
-    public function toSearchableArray(): array
-    {
-        return [
-            //'id' => $this->id,
-            'title' => $this->title,
-        ];
-    }
 
     public function scopeHomePage(Builder $query)
     {

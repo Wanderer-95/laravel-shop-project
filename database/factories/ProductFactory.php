@@ -29,6 +29,7 @@ class ProductFactory extends Factory
             'price' => $this->faker->numberBetween(10000, 100000),
             'on_home_page' => $this->faker->boolean(),
             'sorting' => $this->faker->numberBetween(1, 100),
+            'text' => $this->faker->realText(),
         ];
     }
 }

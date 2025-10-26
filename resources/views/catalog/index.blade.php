@@ -83,10 +83,11 @@
                         <div>
                             <button type="submit" class="w-full !h-16 btn btn-pink">Поиск</button>
                         </div>
-
-                        <div>
-                            <a href="{{ route('catalog', $category) }}" class="w-full !h-16 btn btn-outline">Сбросить фильтры</a>
-                        </div>
+                        @if(request('filters'))
+                            <div>
+                                <a href="{{ route('catalog', $category) }}" class="w-full !h-16 btn btn-outline">Сбросить фильтры</a>
+                            </div>
+                        @endif
                     </form>
                 </aside>
 
